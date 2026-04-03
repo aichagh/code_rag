@@ -29,6 +29,14 @@ vector_db = Chroma(
 # retriving the best 3 chunks
 retriever = vector_db.as_retriever(search_kwargs={"k":3})
 
+# retrieving the file tree specifically
+file_tree_retriever = vector_db.as_retriever(
+        search_kwarg={
+            "filter": {"content": "file_tree"},
+            "k": 1
+            }
+        )
+
 # load ollama model
 llm = ChatOllama(model="qwen2.5:0.5b", temperature="0.2")
 
@@ -38,6 +46,9 @@ prompt_template = """
     of code, answer the given question. If you do not know how to answer the
     question given the code base, simply say you do not know. Do not invent an
     answer outside of the code base.
+    
+    Project structure:
+    {file_tree}
 
     Context source code:
     {context}
@@ -56,7 +67,8 @@ def formatting_docs(docs):
 
 rag_chain = (
         {"context": retriever | formatting_docs,
-        "question": RunnablePassthrough()}
+        "question": RunnablePassthrough(),
+        "file_tree": file_tree_retriever}
         | prompt
         | llm
         | StrOutputParser()
