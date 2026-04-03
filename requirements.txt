@@ -5,6 +5,7 @@ langchain-chroma
 langchain-huggingface
 langchain-ollama
 langchain-text-splitters
+sentence-transformer
 chromadb
 GitPython
 streamlit
