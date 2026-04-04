@@ -12,7 +12,7 @@ st.set_page_config(
         page_icon="hammer_and_wrench:"
         )
 st.title("Kotlin Code Assistant for Criticove codebase")
-st.write("Ask our assistant about th codebase")
+st.write("Ask our assistant about the codebase")
 
 # path to load the persistent database
 perma_dir = "./perma_dir"
@@ -42,10 +42,11 @@ llm = ChatOllama(model="qwen2.5:0.5b", temperature="0.2")
 
 # creating a prompt from a template
 prompt_template = """
-    You are an expert in Kotlin development. Using excerpt from the following source
-    of code, answer the given question. If you do not know how to answer the
+    You are an expert in Kotlin development. Using the following source
+    of code, answer the question. If you do not know how to answer the
     question given the code base, simply say you do not know. Do not invent an
-    answer outside of the code base.
+    answer outside of the code base. When possible, provide a code snippet to
+    support your answer.
     
     Project structure:
     {file_tree}
